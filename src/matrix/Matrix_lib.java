@@ -62,4 +62,41 @@ public class Matrix_lib {
 		    }
 	return cofactor;
 }
-}
+		public double [][] getInverse(double[][] a){
+		    double answer [][] = new double [a.length][a[0].length];
+		    double tmp[][] = new double[a.length -1][a[0].length -1];
+		        double determinant = this.getCofactor(a);
+		        for(int i = 0; i < a.length; i++) {
+		            for(int j = 0; j < a[0].length; j++) {
+		                int p = 0, q = 0;
+		                for(int k = 0; k < a.length; k++) {
+		                    if( i == k ) continue;
+		                    for(int s = 0; s < a[0].length; s++) {
+		                        if( j == s ) continue;
+		                        tmp[p][q] = a[k][s];
+		                        q++;
+		                    }
+		                    p++;
+		                    q = 0;
+		                }
+		                
+		                answer[i][j] = Math.pow(-1, i + 1 + j + 1) * this.getCofactor(tmp) / determinant;
+		            }
+		        }
+		    answer = this.getTranspose(answer);
+		    return answer;
+		}
+		public double[] getSolution(double d[][], double e[]) {
+			double answer [] = new double [d.length];
+		
+			double u[][] = this.getInverse(d);
+			
+			for(int i = 0; i < u.length; i++) {
+	            for(int j = 0; j < u[0].length; j++) {
+				answer [i] += e[j] * u[i][j];
+			}
+		}   
+			return answer;
+		}	
+	}
+
